@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="selectListCount">
+		SELECT COUNT(*) AS COUNT
+		  FROM COMMUNITY
+	</entry>
+	<entry key="selectList">
+		SELECT *
+		FROM(SELECT ROWNUM RNUM, A.*
+		     FROM (SELECT COMM_NO,
+		                   MEM_ID,
+		                   TITLE,
+		                   CONTENT,
+		                   VIEW_COUNT,
+		                   LIKE_COUNT,
+		                   TO_CHAR(CREATE_DATE, 'YYYY/MM/DD') AS "CREATE_DATE",
+		                   TO_CHAR(UPDATE_DATE, 'YYYY/MM/DD') AS "UPDATE_DATE"
+		              FROM COMMUNITY B
+		             ORDER BY COMM_NO DESC) A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	<entry key="createBoard">
+		INSERT INTO COMMUNITY (COMM_NO, MEM_ID, TITLE, CONTENT, CREATE_DATE)
+		VALUES (COMMUNITY_SEQ_NEW.NEXTVAL, :1, :2, :3, SYSDATE)
+	</entry>
+</properties>
+
+
