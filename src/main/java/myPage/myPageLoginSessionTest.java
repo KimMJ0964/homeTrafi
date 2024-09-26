@@ -17,7 +17,7 @@ public class myPageLoginSessionTest extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		session.setAttribute("login", "user02");
+		session.setAttribute("login", "USER02");
 		
 		String loginValue = (String) session.getAttribute("login");
 	    System.out.println("Session login value: " + loginValue);

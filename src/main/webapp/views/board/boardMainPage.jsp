@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="common.PageInfo, java.util.ArrayList, board.Board" %>
+<%@ page import="com.skt.common.PageInfo, java.util.ArrayList,com.skt.board.model.vo.Board" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String contextPath = request.getContextPath();
@@ -294,7 +294,7 @@
     <div class="wrap">
         <div class="container mt-3">
             <div class="main_image">
-                <img src="./img/boardMain.png" class="background-img">
+                <img src="/SktTrafi/views/board/img/boardMain.png" class="background-img">
                 <h1 class="main_image_text">커뮤니티</h1>
                 <div id="search">
                     <div class="dropdown">
@@ -338,12 +338,12 @@
                     </tr>
                 <% } else { %>
                     <% for(Board b : list) { %>
-                        <tr>
+                        <tr onclick="clickDetailPage(<%=b.getCommNo()%>)">
                             <td><%=b.getCommNo()%></td>
                             <td><%=b.getTitle()%></td>
                             <td><%=b.getMemId()%></td>
-                            <td><%=b.getLikeCount()%></td>
                             <td><%=b.getViewCount()%></td>
+                            <td><%=b.getCreateDate() %></td>
                         </tr>
                     <% } %>
                 <% } %>
@@ -355,20 +355,29 @@
             <!-- Pagination -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center mt-3">
-                    <button>&lt;</button>
-            <% for(int p = startPage; p <= endPage; p++) { %>
-                <% if(p == currentPage) { %>
-                    <button disabled><%=p%></button>
-                <% } else {%>
-                <li class="page-item"><a class="page-link" href="<%=contextPath%>/board.bo?cpage=<%=p%>"><%=p%></a></li>
-                <% } %>
-            <% } %>
-            <button>&gt;</button>
+                    <%if(currentPage > 1) { %>
+            			<button onclick="location.href='<%=contextPath%>/board.bo?cpage=<%=currentPage - 1%>'">&lt;</button>
+           			 <% } %>
+            		 <% for(int p = startPage; p <= endPage; p++) { %>
+                			<% if(p == currentPage) { %>
+                    			<button disabled><%=p%></button>
+                			<% } else {%>
+                    			<button onclick="location.href='<%=contextPath%>/board.bo?cpage=<%=p%>'"><%=p%></button>
+               			    <% } %>
+            		 <% } %>
+            		 <%if(currentPage < maxPage) { %>
+            				<button onclick="location.href='<%=contextPath%>/board.bo?cpage=<%=currentPage + 1%>'">&gt;</button>
+        			 <% } %>
                 </ul>
             </nav>
         </div>
     </div>
 
     <div id="footer"></div>
+    <script>
+    function clickDetailPage(boardNo){
+        location.href = "<%=contextPath%>/detail.bo?bno=" + boardNo;
+    }
+    </script>
 </body>
 </html>

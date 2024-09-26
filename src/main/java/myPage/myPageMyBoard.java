@@ -3,8 +3,9 @@ package myPage;
 import java.io.IOException;
 import java.util.List;
 
-import board.Board;
-import board.BoardService;
+import com.skt.board.model.vo.Board;
+import com.skt.board.service.BoardService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

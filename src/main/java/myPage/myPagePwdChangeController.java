@@ -1,14 +1,16 @@
 package myPage;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import com.skt.member.model.vo.Member;
+import com.skt.member.service.MemberServiceImpl;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import member.Member;
-import member.MemberService;
 
 public class myPagePwdChangeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -28,7 +30,7 @@ public class myPagePwdChangeController extends HttpServlet {
 	        String currentPwd = request.getParameter("userPwd");
 	        String newPwd = request.getParameter("updatePwd");
 	        
-	        MemberService memberService = new MemberService();
+	        MemberServiceImpl memberService = new MemberServiceImpl();
 	        Member member = memberService.getMemberById(memId);
 	        
 	        // 현재 비밀번호가 일치하는지 확인
@@ -36,7 +38,7 @@ public class myPagePwdChangeController extends HttpServlet {
 	            int result = memberService.updatePassword(memId, newPwd);
 	            
 	            if (result > 0) {
-	            	request.getRequestDispatcher("views/myPage/myPage.jsp").forward(request, response);	
+	            	request.getRequestDispatcher("views/myPage/myPage.jsp").forward(request, response);
 	            } else {
 	                request.setAttribute("msg", "비밀번호 변경에 실패했습니다.");
 	                request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);

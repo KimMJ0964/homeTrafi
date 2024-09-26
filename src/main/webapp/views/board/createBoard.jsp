@@ -134,7 +134,7 @@
 <body>
     <div id="header"></div>
     <div class="wrap">
-        <form action="<%=contextPath %>/board_create.bd" method="post">
+        <form action="<%=contextPath %>/board_create.bd" enctype="multipart/form-data" method="post" onsubmit="checkType()">
             <!-- 제목 -->
             <div class="mb-3 title-container">
                 <label for="title" class="form-label" style="font-weight: bold;">제목</label>
@@ -150,8 +150,9 @@
             <!-- 버튼 섹션 -->
             <div class="button-container">
                 <div class="left-buttons">
-                    <button type="button" class="img-button btn btn-light">사진추가</button>
-                    
+                    <div>
+                    	<input type="file" name="upfile" >
+                    </div>
                     <!-- 유형추가: 드롭다운 -->
                     <div class="dropdown">
                         <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -168,6 +169,7 @@
                     <button type="submit" class="submit-button btn btn-light">작성완료</button>
                 </div>
             </div>
+            <input type="hidden" id="postType" name="postType" value="">
         </form>
     </div>
 
@@ -176,6 +178,15 @@
         // 유형 선택 시 버튼 텍스트 변경
         function selectType(type) {
             document.getElementById('dropdownMenuButton').innerText = type;
+            document.getElementById('postType').value = type;
+        }
+        
+     	// 폼 제출 시 유형이 선택되지 않았으면 "없음"을 설정
+        function checkType() {
+            var postType = document.getElementById('postType').value;
+            if (postType === "") {
+                document.getElementById('postType').value = "없음";
+            }
         }
 
         // 뒤로 가기 버튼 클릭 시 이전 페이지로 이동

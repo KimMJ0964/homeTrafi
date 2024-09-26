@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="member.Member, member.MemberDao"%>
+<%@ page import="com.skt.member.model.vo.Member,com.skt.member.model.dao.MemberDao"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="board.BoardService"%>
-<%@ page import="board.Board"%>
+<%@ page import="com.skt.board.service.BoardService"%>
+<%@ page import="com.skt.board.model.vo.Board"%>
 <%@ page import="java.util.List"%>
 <%
 String contextPath = request.getContextPath();
@@ -91,6 +91,12 @@ body {
 .profile-info {
 	background-color: white;
 	border-radius: 20px;
+}
+
+.profile-info > form > ul > li > input {
+	border-style: none;
+	background-color: #e8e8e8;
+	border-radius: 5px;
 }
 
 .profile-section .profile-info h6 {
@@ -291,18 +297,18 @@ body {
 
 							if (member != null) {
 							%>
-							<li><img src="./img/profile-icon.png" alt="icon">아이디:
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">아이디:
 								<input type="text" name="memId" value="<%=member.getMemId()%>"
 								readonly></li>
-							<li><img src="./img/profile-icon.png" alt="icon">이름: <input
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">이름: <input
 								type="text" name="memName" value="<%=member.getMemName()%>"></li>
-							<li><img src="./img/profile-icon.png" alt="icon">전화번호:
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">전화번호:
 								<input type="text" name="phone" value="<%=member.getPhone()%>"></li>
-							<li><img src="./img/profile-icon.png" alt="icon">주소: <input
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">주소: <input
 								type="text" name="address" value="<%=member.getAddress()%>"></li>
-							<li><img src="./img/profile-icon.png" alt="icon">주민등록번호:
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">주민등록번호:
 								<input type="text" name="memNo" value="<%=member.getMemNo()%>"></li>
-							<li><img src="./img/profile-icon.png" alt="icon">이메일:
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">이메일:
 								<input type="text" name="email" value="<%=member.getEmail()%>"></li>
 							<%
 							} else {
@@ -314,7 +320,7 @@ body {
 						</ul>
 
 						<div class="profile-buttons">
-							<button type="submit" class="btn btn-primary">수정하기</button>
+							<button type="submit" class="btn btn-primary" title="위 내 정보를 수정할 수 있습니다.">수정하기</button>
 							<button type="button" class="btn btn-sm btn-primary"
 								data-bs-toggle="modal" data-bs-target="#update-pwd-modal">비밀번호
 								변경</button>
