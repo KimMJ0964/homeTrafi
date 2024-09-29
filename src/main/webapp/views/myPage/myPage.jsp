@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.skt.member.model.vo.Member,com.skt.member.model.dao.MemberDao"%>
+<%@ page
+	import="com.skt.member.model.vo.Member, com.skt.member.model.dao.MemberDao"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.skt.board.service.BoardService"%>
+<%@ page import="com.skt.board.service.BoardServiceImpl"%>
 <%@ page import="com.skt.board.model.vo.Board"%>
+<%@ page import="com.skt.board.model.vo.BoardComment"%>
 <%@ page import="java.util.List"%>
 <%
 String contextPath = request.getContextPath();
 String memId = (String) session.getAttribute("login");
-BoardService boardService = new BoardService();
-List<Board> posts = boardService.getUserPosts(memId);
+BoardServiceImpl boardService = new BoardServiceImpl();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,7 +94,7 @@ body {
 	border-radius: 20px;
 }
 
-.profile-info > form > ul > li > input {
+.profile-info>form>ul>li>input {
 	border-style: none;
 	background-color: #e8e8e8;
 	border-radius: 5px;
@@ -291,25 +292,29 @@ body {
 					<form action="<%=contextPath%>/update.me" method="post">
 						<ul>
 							<%
-
 							// 사용자 정보 가져오기
 							Member member = new MemberDao().getMemberById(memId);
 
 							if (member != null) {
 							%>
-							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">아이디:
-								<input type="text" name="memId" value="<%=member.getMemId()%>"
-								readonly></li>
-							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">이름: <input
-								type="text" name="memName" value="<%=member.getMemName()%>"></li>
-							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">전화번호:
-								<input type="text" name="phone" value="<%=member.getPhone()%>"></li>
-							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">주소: <input
-								type="text" name="address" value="<%=member.getAddress()%>"></li>
-							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">주민등록번호:
-								<input type="text" name="memNo" value="<%=member.getMemNo()%>"></li>
-							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png" alt="icon">이메일:
-								<input type="text" name="email" value="<%=member.getEmail()%>"></li>
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png"
+								alt="icon">아이디: <input type="text" name="memId"
+								value="<%=member.getMemId()%>" readonly></li>
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png"
+								alt="icon">이름: <input type="text" name="memName"
+								value="<%=member.getMemName()%>"></li>
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png"
+								alt="icon">전화번호: <input type="text" name="phone"
+								value="<%=member.getPhone()%>"></li>
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png"
+								alt="icon">주소: <input type="text" name="address"
+								value="<%=member.getAddress()%>"></li>
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png"
+								alt="icon">주민등록번호: <input type="text" name="memNo"
+								value="<%=member.getMemNo()%>"></li>
+							<li><img src="/SktTrafi/views/myPage/img/profile-icon.png"
+								alt="icon">이메일: <input type="text" name="email"
+								value="<%=member.getEmail()%>"></li>
 							<%
 							} else {
 							%>
@@ -320,7 +325,8 @@ body {
 						</ul>
 
 						<div class="profile-buttons">
-							<button type="submit" class="btn btn-primary" title="위 내 정보를 수정할 수 있습니다.">수정하기</button>
+							<button type="submit" class="btn btn-primary"
+								title="위 내 정보를 수정할 수 있습니다.">수정하기</button>
 							<button type="button" class="btn btn-sm btn-primary"
 								data-bs-toggle="modal" data-bs-target="#update-pwd-modal">비밀번호
 								변경</button>
@@ -374,16 +380,21 @@ body {
 			<div class="posts-comments-section">
 				<div class="posts-comments-container">
 					<!-- My Posts Section -->
+
 					<div class="posts-section">
 						<h5>내 게시글</h5>
 						<ul>
-							<%
-							for (Board post : posts) {
-							%>
-							<li><strong><%=post.getTitle()%></strong>: <%=post.getContent()%></li>
-							<%
-							}
-							%>
+							<c:if test="${not empty communityList}">
+								<c:forEach var="b" items="${communityList}">
+									<li>${b.title}<br> <a
+										href="detail.bo?bno=${b.commNo}">게시글 들어가기</a>
+										<hr>
+									</li>
+								</c:forEach>
+							</c:if>
+							<c:if test="${empty communityList}">
+								<li>게시글이 없습니다.</li>
+							</c:if>
 						</ul>
 						<div class="view-more">더 보기</div>
 					</div>
@@ -392,185 +403,186 @@ body {
 					<div class="comments-section">
 						<h5>내 댓글</h5>
 						<ul>
-							<li>댓글 1</li>
-							<li>댓글 2</li>
-							<li>댓글 3</li>
-							<li>댓글 1</li>
-							<li>댓글 2</li>
-							<li>댓글 3</li>
-							<!-- More comments -->
+							<c:if test="${not empty userCommentsList}">
+								<c:forEach var="uC" items="${userCommentsList}">
+									<li>${uC.commentContent}<br> <a
+										href="detail.bo?bno=${uC.commNo}">게시글 들어가기</a>
+										<hr>
+									</li>
+								</c:forEach>
+							</c:if>
+							<c:if test="${empty userCommentsList}">
+								<li>댓글이 없습니다.</li>
+							</c:if>
 						</ul>
 						<div class="view-more">더 보기</div>
 					</div>
 				</div>
 			</div>
-		</div>
 
-		<!-- 회원탈퇴 Modal -->
-		<div class="modal" id="delete-member-modal" style="display: none;">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
+			<!-- 회원탈퇴 Modal -->
+			<div class="modal" id="delete-member-modal" style="display: none;">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
 
-					<!-- Modal Header -->
-					<div class="modal-header">
-						<h4 class="modal-title">회원탈퇴</h4>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title">회원탈퇴</h4>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+
+						<!-- Modal body -->
+						<div class="modal-body" align="center">
+							<form action="<%=contextPath%>/delete.me" method="post">
+								<b>탈퇴 후 복구가 불가능합니다.<br> 정말로 탈퇴하시겠습니까?
+								</b> <br> <br> <input type="hidden" name="userId"
+									value="<%=memId%>"> 비밀번호 : <input type="password"
+									name="userPwd" required> <br> <br>
+								<button type="submit" class="btn btn-sm btn-danger">
+									탈퇴하기</button>
+							</form>
+						</div>
+
 					</div>
-
-					<!-- Modal body -->
-					<div class="modal-body" align="center">
-						<form action="<%=contextPath%>/delete.me" method="post">
-							<b>탈퇴 후 복구가 불가능합니다.<br> 정말로 탈퇴하시겠습니까?
-							</b> <br> <br> <input type="hidden" name="userId"
-								value="<%=memId%>"> 비밀번호 : <input type="password"
-								name="userPwd" required> <br> <br>
-							<button type="submit" class="btn btn-sm btn-danger">
-								탈퇴하기</button>
-						</form>
-					</div>
-
 				</div>
 			</div>
-		</div>
 
-		<!-- 비밀번호 변경 Modal -->
-		<div class="modal" id="update-pwd-modal" style="display: none;">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
+			<!-- 비밀번호 변경 Modal -->
+			<div class="modal" id="update-pwd-modal" style="display: none;">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
 
-					<!-- Modal Header -->
-					<div class="modal-header">
-						<h4 class="modal-title">비밀번호 변경</h4>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-					</div>
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title">비밀번호 변경</h4>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
 
-					<!-- Modal body -->
-					<div class="modal-body" align="center">
-						<form action="<%=contextPath%>/updatePwd.me" method="post">
-							<input type="hidden" name="userId" value="<%=memId%>">
-							<table>
-								<tr>
-									<td>현재 비밀번호</td>
-									<td><input type="password" name="userPwd" required></td>
-								</tr>
-								<tr>
-									<td>변경할 비밀번호</td>
-									<td><input type="password" name="updatePwd" required></td>
-								</tr>
-								<tr>
-									<td>변경할 비밀번호 확인</td>
-									<td><input type="password" name="checkPwd" required></td>
-								</tr>
-							</table>
-							<br>
-							<button id="edit-pwd-btn" type="submit"
-								class="btn btn-sm btn-secondary">비밀번호 변경</button>
-						</form>
+						<!-- Modal body -->
+						<div class="modal-body" align="center">
+							<form action="<%=contextPath%>/updatePwd.me" method="post">
+								<input type="hidden" name="userId" value="<%=memId%>">
+								<table>
+									<tr>
+										<td>현재 비밀번호</td>
+										<td><input type="password" name="userPwd" required></td>
+									</tr>
+									<tr>
+										<td>변경할 비밀번호</td>
+										<td><input type="password" name="updatePwd" required></td>
+									</tr>
+									<tr>
+										<td>변경할 비밀번호 확인</td>
+										<td><input type="password" name="checkPwd" required></td>
+									</tr>
+								</table>
+								<br>
+								<button id="edit-pwd-btn" type="submit"
+									class="btn btn-sm btn-secondary">비밀번호 변경</button>
+							</form>
 
-						<script>
-							document.getElementById("edit-pwd-btn").onclick = function() {
-								const pwd = document
-										.querySelector("input[name=updatePwd]").value
-								const pwdCheck = document
-										.querySelector("input[name=checkPwd]").value
+							<script>
+								document.getElementById("edit-pwd-btn").onclick = function() {
+									const pwd = document
+											.querySelector("input[name=updatePwd]").value
+									const pwdCheck = document
+											.querySelector("input[name=checkPwd]").value
 
-								if (pwd !== pwdCheck) {
-									alert("비밀번호가 일치하지 않습니다.");
-									return false;
+									if (pwd !== pwdCheck) {
+										alert("비밀번호가 일치하지 않습니다.");
+										return false;
+									}
 								}
+							</script>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<script>
+				document.getElementById("delete-account-btn").addEventListener(
+						"click", function() {
+							if (confirm("정말로 회원탈퇴를 진행하시겠습니까?")) {
+								// 네
+								alert("회원탈퇴가 진행됩니다.");
+							} else {
+								// 아니요
+								alert("회원탈퇴가 취소되었습니다.");
 							}
-						</script>
-					</div>
+						});
 
-				</div>
-			</div>
-		</div>
+				// 모달 열기 및 닫기 로직
+				var modal = document.getElementById("editProfileModal");
+				var btn = document.getElementById("edit-profile-btn");
+				var span = document.getElementsByClassName("close")[0];
 
-		<script>
-			document.getElementById("delete-account-btn").addEventListener(
-					"click", function() {
-						if (confirm("정말로 회원탈퇴를 진행하시겠습니까?")) {
-							// 네
-							alert("회원탈퇴가 진행됩니다.");
-						} else {
-							// 아니요
-							alert("회원탈퇴가 취소되었습니다.");
-						}
-					});
+				btn.onclick = function() {
+					modal.style.display = "block";
+				}
 
-			// 모달 열기 및 닫기 로직
-			var modal = document.getElementById("editProfileModal");
-			var btn = document.getElementById("edit-profile-btn");
-			var span = document.getElementsByClassName("close")[0];
-
-			btn.onclick = function() {
-				modal.style.display = "block";
-			}
-
-			span.onclick = function() {
-				modal.style.display = "none";
-			}
-
-			window.onclick = function(event) {
-				if (event.target == modal) {
+				span.onclick = function() {
 					modal.style.display = "none";
 				}
-			}
 
-			// 이메일 도메인 선택 시 처리
-			var emailDomainSelect = document.getElementById("email-domain");
-			var customDomainInput = document.getElementById("custom-domain");
-
-			emailDomainSelect.onchange = function() {
-				if (emailDomainSelect.value === "custom") {
-					customDomainInput.style.display = "inline-block";
-				} else {
-					customDomainInput.style.display = "none";
-					customDomainInput.value = ""; // 입력 필드를 초기화
+				window.onclick = function(event) {
+					if (event.target == modal) {
+						modal.style.display = "none";
+					}
 				}
-			}
 
-			// 비밀번호 변경 모달 관련 코드
-			const modal = document.getElementById("update-pwd-modal");
-			const openModalBtn = document
-					.querySelector("[data-bs-target='#update-pwd-modal']");
-			const closeModalBtn = document.querySelector(".close-btn");
-			const editPwdBtn = document.getElementById("edit-pwd-btn");
+				// 이메일 도메인 선택 시 처리
+				var emailDomainSelect = document.getElementById("email-domain");
+				var customDomainInput = document
+						.getElementById("custom-domain");
 
-			// 모달 열기
-			openModalBtn.addEventListener("click", function() {
-				modal.style.display = "block";
-			});
+				emailDomainSelect.onchange = function() {
+					if (emailDomainSelect.value === "custom") {
+						customDomainInput.style.display = "inline-block";
+					} else {
+						customDomainInput.style.display = "none";
+						customDomainInput.value = ""; // 입력 필드를 초기화
+					}
+				}
 
-			// X 버튼으로 모달 닫기
-			closeModalBtn.addEventListener("click", function() {
-				modal.style.display = "none";
-			});
+				// 비밀번호 변경 모달 관련 코드
+				const modal = document.getElementById("update-pwd-modal");
+				const openModalBtn = document
+						.querySelector("[data-bs-target='#update-pwd-modal']");
+				const closeModalBtn = document.querySelector(".close-btn");
+				const editPwdBtn = document.getElementById("edit-pwd-btn");
 
-			// 모달 외부 클릭 시 모달 닫기
-			window.addEventListener("click", function(event) {
-				if (event.target == modal) {
+				// 모달 열기
+				openModalBtn.addEventListener("click", function() {
+					modal.style.display = "block";
+				});
+
+				// X 버튼으로 모달 닫기
+				closeModalBtn.addEventListener("click", function() {
 					modal.style.display = "none";
-				}
-			});
+				});
 
-			// 완료 버튼 클릭 시 모달 닫기 (비밀번호 수정 폼)
-			editPwdBtn
-					.addEventListener(
-							"click",
-							function(event) {
-								const pwd = document
-										.querySelector("input[name='updatePwd']").value;
-								const pwdCheck = document
-										.querySelector("input[name='checkPwd']").value;
+				// 모달 외부 클릭 시 모달 닫기
+				window.addEventListener("click", function(event) {
+					if (event.target == modal) {
+						modal.style.display = "none";
+					}
+				});
 
-								if (pwd !== pwdCheck) {
-									alert("비밀번호가 일치하지 않습니다.");
-									event.preventDefault(); // 비밀번호가 일치하지 않으면 폼 제출을 막음
-								} else {
-									modal.style.display = "none"; // 비밀번호가 일치하면 모달 닫기
-								}
-							});
-		</script>
+				// 완료 버튼 클릭 시 모달 닫기 (비밀번호 수정 폼)
+				editPwdBtn.addEventListener("click", function(event) {
+					const pwd = document
+							.querySelector("input[name='updatePwd']").value;
+					const pwdCheck = document
+							.querySelector("input[name='checkPwd']").value;
+
+					if (pwd !== pwdCheck) {
+						alert("비밀번호가 일치하지 않습니다.");
+						event.preventDefault(); // 비밀번호가 일치하지 않으면 폼 제출을 막음
+					} else {
+						modal.style.display = "none"; // 비밀번호가 일치하면 모달 닫기
+					}
+				});
+			</script>
 </body>
 </html>

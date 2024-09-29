@@ -1,4 +1,4 @@
-package myPage;
+package com.skt.member.controller;
 
 import java.io.IOException;
 
@@ -32,10 +32,10 @@ public class myPageUpdateController extends HttpServlet {
 		System.out.println("member : " + member);
 
 		// Service를 통해 업데이트 요청 처리
-		Member result = new MemberServiceImpl().updateMember(member);
+		int result = new MemberServiceImpl().updateMember(member);
 
 		System.out.println("result : " + result);
-		if (result != null) {
+		if (result > 0) {
 			// 업데이트 성공 시 성공 페이지로 이동
 			request.getSession().setAttribute("message", "회원 정보가 성공적으로 업데이트되었습니다.");
 			response.sendRedirect(request.getContextPath() + "/myPageTest.me");

@@ -7,7 +7,7 @@
   </welcome-file-list>
   <servlet>
     <servlet-name>myPageLoginSessionTest</servlet-name>
-    <servlet-class>myPage.myPageLoginSessionTest</servlet-class>
+    <servlet-class>com.skt.member.controller.myPageLoginSessionTest</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>myPageLoginSessionTest</servlet-name>
@@ -17,7 +17,7 @@
     <description></description>
     <display-name>board.bo</display-name>
     <servlet-name>board.bo</servlet-name>
-    <servlet-class>board.BoardListController</servlet-class>
+    <servlet-class>com.skt.board.controller.BoardListController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>board.bo</servlet-name>
@@ -25,9 +25,29 @@
   </servlet-mapping>
   <servlet>
     <description></description>
+    <display-name>detail.bo</display-name>
+    <servlet-name>detail.bo</servlet-name>
+    <servlet-class>com.skt.board.controller.BoardDetailController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>detail.bo</servlet-name>
+    <url-pattern>/detail.bo</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>deleteBoard.bo</display-name>
+    <servlet-name>deleteBoard.bo</servlet-name>
+    <servlet-class>com.skt.board.controller.BoardDeleteController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>deleteBoard.bo</servlet-name>
+    <url-pattern>/deleteBoard.bo</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
     <display-name>board_create.bd</display-name>
     <servlet-name>board_create.bd</servlet-name>
-    <servlet-class>board.BoardCreateController</servlet-class>
+    <servlet-class>com.skt.board.controller.BoardCreateController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>board_create.bd</servlet-name>
@@ -37,7 +57,7 @@
     <description></description>
     <display-name>update.me</display-name>
     <servlet-name>update.me</servlet-name>
-    <servlet-class>myPage.myPageUpdateController</servlet-class>
+    <servlet-class>com.skt.member.controller.myPageUpdateController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>update.me</servlet-name>
@@ -47,7 +67,7 @@
     <description></description>
     <display-name>updatePwd.me</display-name>
     <servlet-name>updatePwd.me</servlet-name>
-    <servlet-class>myPage.myPagePwdChangeController</servlet-class>
+    <servlet-class>com.skt.member.controller.myPagePwdChangeController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>updatePwd.me</servlet-name>
@@ -57,7 +77,7 @@
     <description></description>
     <display-name>delete.me</display-name>
     <servlet-name>delete.me</servlet-name>
-    <servlet-class>myPage.myPageDeleteMember</servlet-class>
+    <servlet-class>com.skt.member.controller.myPageDeleteMember</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>delete.me</servlet-name>
@@ -67,10 +87,30 @@
     <description></description>
     <display-name>myPageMyBoard</display-name>
     <servlet-name>myPageMyBoard</servlet-name>
-    <servlet-class>myPage.myPageMyBoard</servlet-class>
+    <servlet-class>com.skt.member.controller.myPageMyBoard</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>myPageMyBoard</servlet-name>
     <url-pattern>/myPageMyBoard</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>insertComment.bo</display-name>
+    <servlet-name>insertComment.bo</servlet-name>
+    <servlet-class>com.skt.board.controller.BoardInsertCommentController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>insertComment.bo</servlet-name>
+    <url-pattern>/insertComment.bo</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description>updateBoard.bo</description>
+    <display-name>UpdateBoardController</display-name>
+    <servlet-name>UpdateBoardController</servlet-name>
+    <servlet-class>com.skt.board.controller.UpdateBoardController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateBoardController</servlet-name>
+    <url-pattern>/UpdateBoardController</url-pattern>
   </servlet-mapping>
 </web-app>

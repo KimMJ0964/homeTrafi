@@ -1,4 +1,4 @@
-package myPage;
+package com.skt.member.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,17 +25,20 @@ public class myPagePwdChangeController extends HttpServlet {
 	        // 세션에서 로그인된 사용자 정보 가져오기
 	        HttpSession session = request.getSession();
 	        String memId = (String) session.getAttribute("login");
+	        MemberServiceImpl memberService = new MemberServiceImpl();
 	        
 	        // 비밀번호 확인 및 변경할 비밀번호 가져오기
 	        String currentPwd = request.getParameter("userPwd");
 	        String newPwd = request.getParameter("updatePwd");
 	        
-	        MemberServiceImpl memberService = new MemberServiceImpl();
-	        Member member = memberService.getMemberById(memId);
+	        String checkPwd = memberService.selectPasswordByMemId(memId);
 	        
+	        Member member = new Member(memId, newPwd);
+	        
+	        System.out.println("member.getMemPwd : " + member.getMemPwd() + " checkpwd : " + checkPwd );
 	        // 현재 비밀번호가 일치하는지 확인
-	        if (member != null && member.getMemPwd().equals(currentPwd)) {
-	            int result = memberService.updatePassword(memId, newPwd);
+	        if (member != null && checkPwd.equals(currentPwd)) {
+	            int result = memberService.updatePassword(member);
 	            
 	            if (result > 0) {
 	            	request.getRequestDispatcher("views/myPage/myPage.jsp").forward(request, response);

@@ -134,7 +134,7 @@
 <body>
     <div id="header"></div>
     <div class="wrap">
-        <form action="<%=contextPath %>/board_create.bd" enctype="multipart/form-data" method="post" onsubmit="checkType()">
+        <form action="<%=contextPath %>/updateBoard.bo" enctype="multipart/form-data" method="post" onsubmit="checkType()">
             <!-- 제목 -->
             <div class="mb-3 title-container">
                 <label for="title" class="form-label" style="font-weight: bold;">제목</label>
@@ -170,6 +170,7 @@
                 </div>
             </div>
             <input type="hidden" id="postType" name="postType" value="">
+            <input type="hidden" name="bno" value="<%= request.getParameter("bno") %>">
         </form>
     </div>
 

@@ -1,4 +1,4 @@
-package myPage;
+package com.skt.member.controller;
 
 import java.io.IOException;
 

@@ -6,9 +6,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.skt.board.model.vo.Board;
+import com.skt.board.model.vo.BoardComment;
 import com.skt.member.model.vo.Member;
 
 public class MemberDao {
@@ -45,9 +48,9 @@ public class MemberDao {
         return member;
     }
 
-	public Member updateMember(SqlSession sqlSession, Member member) {
+	public int updateMember(SqlSession sqlSession, Member member) {
 		System.out.println("UpdateDaoResult member : " + member);
-		Member UpdateDaoResult = sqlSession.update("memberMapper.updateMember", member);
+		int UpdateDaoResult = sqlSession.update("memberMapper.updateMember", member);
 		System.out.println("UpdateDaoResult : " + UpdateDaoResult);
 		
 		return UpdateDaoResult;
@@ -109,25 +112,28 @@ public class MemberDao {
     }
     
     // 비밀번호 변경
-    public int updatePassword(Connection conn, String memId, String newPwd) {
-        int result = 0;
-        PreparedStatement pstmt = null;
-
-        String query = "UPDATE MEMBER SET MEM_PWD = ? WHERE MEM_ID = ?";
-
-        try {
-            pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, newPwd);
-            pstmt.setString(2, memId);
-            result = pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(pstmt);
-        }
-
-        return result;
+    public int updatePassword(SqlSession sqlSession, Member member) {
+    	return sqlSession.update("memberMapper.updatePassword", member);
     }
-
+    
+    public String selectPasswordByMemId(SqlSession sqlSession, String memId){
+    	return sqlSession.selectOne("memberMapper.selectPasswordByMemId", memId);
+    }
+    
+    public ArrayList<Board> myPageBoard(SqlSession sqlSession, String memId){
+    	return (ArrayList)sqlSession.selectList("boardMapper.myPageBoard", memId);
+    }
+    
+    public ArrayList<BoardComment> myPageComment(SqlSession sqlSession, String memId) {
+    	return (ArrayList)sqlSession.selectList("boardMapper.myPageComment", memId);
+    }
+    
+    public Member getMemberById(SqlSession session, String memId) {
+        return session.selectOne("memberMapper.selectMemberById", memId);
+    }
+    
+    // 회원 삭제
+    public int deleteMember(SqlSession session, String memId) {
+        return session.update("memberMapper.deleteMember", memId);
+    }
 }

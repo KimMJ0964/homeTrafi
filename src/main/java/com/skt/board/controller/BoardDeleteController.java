@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import com.skt.board.service.BoardServiceImpl;
+
 public class BoardDeleteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -19,7 +21,7 @@ public class BoardDeleteController extends HttpServlet {
 		int boardNo = Integer.parseInt(request.getParameter("bno"));
 		String contextPath = request.getContextPath();
 		
-		BoardService bService = new BoardService();
+		BoardServiceImpl bService = new BoardServiceImpl();
 		int result = bService.deleteBoard(request, boardNo);
 		
 		if(result > 0) {

@@ -38,7 +38,12 @@ public class Member {
 		this.memNo = memNo;
 		this.email = email;
 	}
-
+	
+	public Member(String memId, String memPwd) {
+		super();
+		this.memId = memId;
+		this.memPwd = memPwd;
+	}
 	public String getMemId() {
 		return memId;
 	}

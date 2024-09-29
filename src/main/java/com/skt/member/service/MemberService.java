@@ -4,4 +4,6 @@ import com.skt.member.model.vo.Member;
 
 public interface MemberService {
 	public abstract Member updateMember(Member m);
+	
+	public abstract int updatePassword(Member member);
 }
